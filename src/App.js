@@ -1,24 +1,27 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Dashboard from './pages/Dashboard';
-import PrivateRoute from './PrivateRoute';  // Import the PrivateRoute component
+// App.js
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import routes from "./routes";
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./PublicRoute";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route 
-          path="/dashboard" 
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          } 
-        />
+        {routes.map(({ path, element, routeType }, index) => (
+          <Route
+            key={index}
+            path={path}
+            element={
+              routeType === "private" ? (
+                <PrivateRoute>{element}</PrivateRoute>
+              ) : (
+                <PublicRoute>{element}</PublicRoute>
+              )
+            }
+          />
+        ))}
       </Routes>
     </Router>
   );

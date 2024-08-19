@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Box, Container, Button, InputBase } from "@mui/material";
 import { Search } from "@mui/icons-material";
-import { fetchData } from "../utils/apiUtils";
-import TableComponent from "../components/TableComponent";
-import Layout from "../components/Layout";
+import { fetchData } from "../../utils/apiUtils";
+import TableComponent from "../../components/TableComponent";
+import Layout from "../../components/Layout";
 import { useNavigate } from "react-router-dom";
 
 const columns = [
@@ -13,7 +13,7 @@ const columns = [
   { id: "category_id", label: "Category", minWidth: 170, align: "right" },
 ];
 
-export default function Dashboard() {
+export default function IncomeIndex() {
   const [expenses, setExpenses] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -23,7 +23,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     const fetchExpenses = async () => {
-      const { data, error } = await fetchData("/expense");
+      const { data, error } = await fetchData("/income");
       setLoading(false);
       if (error) {
         setError(error);
@@ -53,13 +53,15 @@ export default function Dashboard() {
           variant="contained"
           sx={{
             backgroundColor: "#111827",
+            marginBottom: "10px",
+            float: "right",
             "&:hover": {
               backgroundColor: "#333", // Change this to your desired hover color
             },
           }}
-          onClick={() => navigate("/user/category/create")}
+          onClick={() => navigate("/user/income/create")}
         >
-          + Add Expense
+          + Add Income
         </Button>
 
         <TableComponent

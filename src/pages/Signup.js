@@ -1,44 +1,59 @@
-import React, { useState } from 'react';
-import { Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container, Link } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import backgroundImage from '../utils/images/background.jpg';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  Link,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import backgroundImage from "../utils/images/background.jpg";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#4CAF50', 
+      main: "#111827",
     },
     secondary: {
-      main: '#FF9800', 
+      main: "#FF9800",
     },
   },
 });
 
 function Signup() {
-  
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
+
     try {
-      const response = await axios.post('http://localhost:3000/auth/signup', {
-        email,
-        password,
-      },
-      { withCredentials: true }    );
+      const response = await axios.post(
+        "http://localhost:3000/auth/signup",
+        {
+          firstName,
+          lastName,
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
 
       const token = response.data.accessToken;
-      localStorage.setItem('token', token);
-      navigate('/dashboard');
+      localStorage.setItem("token", token);
+      navigate("/user/dashboard");
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error("Login failed:", error);
     }
   };
 
@@ -47,48 +62,55 @@ function Signup() {
       <Box
         sx={{
           backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box
             sx={{
-              backgroundColor: 'rgba(255, 255, 255, 0.8)', // White background with transparency
+              backgroundColor: "rgba(255, 255, 255, 0.8)", // White background with transparency
               padding: 4,
               borderRadius: 2,
               boxShadow: 3,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center', // Center align content horizontally
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center", // Center align content horizontally
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+            <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5" align="center">
               Sign in
             </Typography>
-            <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
-            <TextField
-          label="First Name"
-          fullWidth
-          margin="normal"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <TextField
-          label="Last Name"
-          fullWidth
-          margin="normal"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
+            <Box
+              component="form"
+              onSubmit={handleLogin}
+              noValidate
+              sx={{ mt: 1 }}
+            >
+              <TextField
+                label="First Name"
+                fullWidth
+                margin="normal"
+                name="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              <TextField
+                label="Last Name"
+                fullWidth
+                margin="normal"
+                value={lastName}
+                name="lastName"
+                onChange={(e) => setLastName(e.target.value)}
+              />
               <TextField
                 margin="normal"
                 required
