@@ -9,6 +9,8 @@ import Index from "./pages/category/CategoryIndex";
 import CreateCategory from "./pages/category/CreateCategory";
 import IncomeIndex from "./pages/income/IncomeIndex";
 import BudgetIndex from "./pages/budget/BudgetIndex";
+import CreateBudget from "./pages/budget/CreateBudget";
+import CreateIncome from "./pages/income/CreateIncome";
 
 const routes = [
   { path: "/", element: <Login />, routeType: "public" },
@@ -28,7 +30,10 @@ const routes = [
     routeType: "private",
   },
   { path: "/user/income", element: <IncomeIndex />, routeType: "private" },
+  { path: "/user/income/create", element: <CreateIncome />, routeType: "private" },
+
   { path: "/user/budget", element: <BudgetIndex />, routeType: "private" },
+  { path: "/user/budget/create", element: <CreateBudget />, routeType: "private" },
   { path: "/user/logout", element: <Logout />, routeType: "public" },
 ];
 
