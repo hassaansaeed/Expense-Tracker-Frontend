@@ -13,7 +13,7 @@ const columns = [
   { id: "source", label: "Source" },
   {
     id: "createdAt",
-    label: "Date",
+    label: "Created At",
     align: "right",
     format: (value) =>
       new Intl.DateTimeFormat("en-US", {

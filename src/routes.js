@@ -20,6 +20,8 @@ const routes = [
   { path: "/", element: <Login />, routeType: "public" },
   { path: "/login", element: <Login />, routeType: "public" },
   { path: "/signup", element: <Signup />, routeType: "public" },
+  { path: "/user/logout", element: <Logout />, routeType: "private" },
+
   { path: "/user/dashboard", element: <Dashboard />, routeType: "private" },
   { path: "/user/expenses", element: <ExpenseIndex />, routeType: "private" },
   {
@@ -71,7 +73,6 @@ const routes = [
     element: <CreateBudget />,
     routeType: "private",
   },
-  { path: "/user/logout", element: <Logout />, routeType: "public" },
 ];
 
 export default routes;

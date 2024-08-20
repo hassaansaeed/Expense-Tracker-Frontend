@@ -32,7 +32,7 @@ const columns = [
   },
   {
     id: "createdAt",
-    label: "Created Date",
+    label: "Created At",
     minWidth: 170,
     align: "right",
     format: (value) =>

@@ -10,7 +10,7 @@ const columns = [
   { id: "name", label: "Name", minWidth: 170 },
   {
     id: "createdAt",
-    label: "Date",
+    label: "Created At",
     minWidth: 170,
     align: "right",
     format: (value) =>
