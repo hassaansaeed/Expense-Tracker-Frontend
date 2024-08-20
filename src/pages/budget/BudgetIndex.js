@@ -60,7 +60,7 @@ export default function BudgetIndex() {
           }}
           onClick={() => navigate("/user/budget/create")}
         >
-          + Add Category
+          + Add Budget
         </Button>
 
         <TableComponent

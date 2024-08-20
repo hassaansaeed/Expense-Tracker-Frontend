@@ -42,6 +42,16 @@ export default function TableComponent({
                 <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
                   {columns.map((column) => {
                     const value = row[column.id];
+                    
+                    // Conditional rendering
+                    if (column.id === 'category_id') {
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          <div>{row.category_id.name}</div>
+                        </TableCell>
+                      );
+                    }
+                    
                     return (
                       <TableCell key={column.id} align={column.align}>
                         {column.format && typeof value === "number"
