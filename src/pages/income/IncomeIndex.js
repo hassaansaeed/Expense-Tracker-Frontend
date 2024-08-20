@@ -57,6 +57,10 @@ export default function IncomeIndex() {
     setPage(0);
   };
 
+  const handleEdit = (id) => {
+    navigate(`/user/income/edit/${id}`);
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error loading data!</div>;
 
@@ -85,6 +89,7 @@ export default function IncomeIndex() {
           rowsPerPage={rowsPerPage}
           handleChangePage={handleChangePage}
           handleChangeRowsPerPage={handleChangeRowsPerPage}
+          onEdit={handleEdit}
         />
       </Container>
     </Layout>

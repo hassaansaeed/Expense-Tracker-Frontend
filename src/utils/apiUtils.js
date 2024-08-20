@@ -33,3 +33,16 @@ export async function postData(endpoint, data) {
     return { data: null, error };
   }
 }
+
+export async function putData(endpoint, data) {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await instance.put(endpoint, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return { data: response.data, error: null };
+  } catch (error) {
+    console.error("Error posting data:", error);
+    return { data: null, error };
+  }
+}
