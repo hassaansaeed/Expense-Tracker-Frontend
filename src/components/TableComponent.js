@@ -10,6 +10,7 @@ import {
   TableRow,
   Button,
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
 export default function TableComponent({
   columns,
@@ -63,13 +64,12 @@ export default function TableComponent({
                     );
                   })}
                   <TableCell>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => onEdit(row.uuid)} // Call the onEdit function with the record ID
-                    >
-                      Edit
-                    </Button>
+                    <EditIcon
+                      onClick={() => onEdit(row.uuid)}
+                      sx={{
+                        cursor: "pointer",
+                      }}
+                    />
                   </TableCell>
                 </TableRow>
               ))}

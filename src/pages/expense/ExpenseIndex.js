@@ -9,9 +9,11 @@ import { useNavigate } from "react-router-dom";
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
   { id: "amount", label: "Amount", minWidth: 100, align: "right" },
+  { id: "category", label: "Category", minWidth: 170, align: "right" },
+
   {
     id: "createdAt",
-    label: "Date",
+    label: "Created At",
     minWidth: 170,
     align: "right",
     format: (value) =>
@@ -24,7 +26,6 @@ const columns = [
         second: "2-digit",
       }).format(new Date(value)),
   },
-  { id: "category", label: "Category", minWidth: 170, align: "right" },
 ];
 
 export default function ExpenseIndex() {
