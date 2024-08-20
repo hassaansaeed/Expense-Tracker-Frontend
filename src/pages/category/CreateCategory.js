@@ -79,7 +79,7 @@ export default function CreateCategory() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Layout title="Category">
+      <Layout title="Create Category">
         <Container maxWidth="lg">
           <Box component="form" onSubmit={handleSubmit} sx={{ mb: 3 }}>
             <DynamicTextField

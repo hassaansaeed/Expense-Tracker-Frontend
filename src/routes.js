@@ -30,10 +30,18 @@ const routes = [
     routeType: "private",
   },
   { path: "/user/income", element: <IncomeIndex />, routeType: "private" },
-  { path: "/user/income/create", element: <CreateIncome />, routeType: "private" },
+  {
+    path: "/user/income/create",
+    element: <CreateIncome />,
+    routeType: "private",
+  },
 
   { path: "/user/budget", element: <BudgetIndex />, routeType: "private" },
-  { path: "/user/budget/create", element: <CreateBudget />, routeType: "private" },
+  {
+    path: "/user/budget/create",
+    element: <CreateBudget />,
+    routeType: "private",
+  },
   { path: "/user/logout", element: <Logout />, routeType: "public" },
 ];
 

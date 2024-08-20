@@ -7,9 +7,22 @@ import Layout from "../../components/Layout";
 import { useNavigate } from "react-router-dom";
 
 const columns = [
-  { id: "uuid", label: "uuid", minWidth: 170 },
   { id: "name", label: "Name", minWidth: 170 },
-  { id: "createdAt", label: "Date", minWidth: 170, align: "right" },
+  {
+    id: "createdAt",
+    label: "Date",
+    minWidth: 170,
+    align: "right",
+    format: (value) =>
+      new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      }).format(new Date(value)),
+  },
 ];
 
 export default function Index() {

@@ -9,8 +9,22 @@ import { useNavigate } from "react-router-dom";
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
   { id: "amount", label: "Amount", minWidth: 100, align: "right" },
-  { id: "createdAt", label: "Date", minWidth: 170, align: "right" },
-  { id: "category_id", label: "Category", minWidth: 170, align: "right" },
+  {
+    id: "createdAt",
+    label: "Date",
+    minWidth: 170,
+    align: "right",
+    format: (value) =>
+      new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      }).format(new Date(value)),
+  },
+  { id: "category", label: "Category", minWidth: 170, align: "right" },
 ];
 
 export default function ExpenseIndex() {

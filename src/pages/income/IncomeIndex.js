@@ -7,10 +7,24 @@ import Layout from "../../components/Layout";
 import { useNavigate } from "react-router-dom";
 
 const columns = [
-  { id: "name", label: "Name", minWidth: 170 },
-  { id: "amount", label: "Amount", minWidth: 100, align: "right" },
-  { id: "createdAt", label: "Date", minWidth: 170, align: "right" },
-  { id: "category_id", label: "Category", minWidth: 170, align: "right" },
+  { id: "name", label: "Name" },
+  { id: "description", label: "Description" },
+  { id: "amount", label: "Amount", align: "right" },
+  { id: "source", label: "Source" },
+  {
+    id: "createdAt",
+    label: "Date",
+    align: "right",
+    format: (value) =>
+      new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      }).format(new Date(value)),
+  },
 ];
 
 export default function IncomeIndex() {
@@ -47,7 +61,7 @@ export default function IncomeIndex() {
   if (error) return <div>Error loading data!</div>;
 
   return (
-    <Layout title="Expenses">
+    <Layout title="Income">
       <Container maxWidth="lg">
         <Button
           variant="contained"

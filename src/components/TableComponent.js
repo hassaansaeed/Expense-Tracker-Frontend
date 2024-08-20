@@ -8,6 +8,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Button,
 } from "@mui/material";
 
 export default function TableComponent({
@@ -17,6 +18,7 @@ export default function TableComponent({
   rowsPerPage,
   handleChangePage,
   handleChangeRowsPerPage,
+  onEdit, // Add the onEdit handler prop
 }) {
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -33,6 +35,7 @@ export default function TableComponent({
                   {column.label}
                 </TableCell>
               ))}
+              <TableCell>Action</TableCell> {/* New Action column */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -42,24 +45,32 @@ export default function TableComponent({
                 <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
                   {columns.map((column) => {
                     const value = row[column.id];
-                    
-                    // Conditional rendering
-                    if (column.id === 'category_id') {
+
+                    if (column.id === "category_id") {
                       return (
                         <TableCell key={column.id} align={column.align}>
                           <div>{row.category_id.name}</div>
                         </TableCell>
                       );
                     }
-                    
+
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === "number"
+                        {column.format && typeof value === "string"
                           ? column.format(value)
                           : value}
                       </TableCell>
                     );
                   })}
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => onEdit(row.uuid)} // Call the onEdit function with the record ID
+                    >
+                      Edit
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>
