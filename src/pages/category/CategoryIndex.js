@@ -54,12 +54,15 @@ export default function Index() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+  const handleEdit = (id) => {
+    navigate(`/user/category/edit/${id}`);
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error loading data!</div>;
 
   return (
-    <Layout title="Expenses">
+    <Layout title="Categories">
       <Container maxWidth="lg">
         <Button
           variant="contained"
@@ -83,6 +86,7 @@ export default function Index() {
           rowsPerPage={rowsPerPage}
           handleChangePage={handleChangePage}
           handleChangeRowsPerPage={handleChangeRowsPerPage}
+          onEdit={handleEdit}
         />
       </Container>
     </Layout>

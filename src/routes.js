@@ -11,6 +11,10 @@ import IncomeIndex from "./pages/income/IncomeIndex";
 import BudgetIndex from "./pages/budget/BudgetIndex";
 import CreateBudget from "./pages/budget/CreateBudget";
 import CreateIncome from "./pages/income/CreateIncome";
+import EditBudget from "./pages/budget/EditBudget";
+import EditIncome from "./pages/income/EditIncome";
+import EditCategory from "./pages/category/EditCategory";
+import EditExpense from "./pages/expense/EditExpense";
 
 const routes = [
   { path: "/", element: <Login />, routeType: "public" },
@@ -23,12 +27,26 @@ const routes = [
     element: <CreateExpense />,
     routeType: "private",
   },
+
+  {
+    path: "/user/expense/edit/:id",
+    element: <EditExpense />,
+    routeType: "private",
+  },
   { path: "/user/categories", element: <Index />, routeType: "private" },
+
   {
     path: "/user/category/create",
     element: <CreateCategory />,
     routeType: "private",
   },
+
+  {
+    path: "/user/category/edit/:id",
+    element: <EditCategory />,
+    routeType: "private",
+  },
+
   { path: "/user/income", element: <IncomeIndex />, routeType: "private" },
   {
     path: "/user/income/create",
@@ -36,7 +54,18 @@ const routes = [
     routeType: "private",
   },
 
+  {
+    path: "/user/income/edit/:id",
+    element: <EditIncome />,
+    routeType: "private",
+  },
+
   { path: "/user/budget", element: <BudgetIndex />, routeType: "private" },
+  {
+    path: "/user/budget/edit/:id",
+    element: <EditBudget />,
+    routeType: "private",
+  },
   {
     path: "/user/budget/create",
     element: <CreateBudget />,

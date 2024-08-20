@@ -81,7 +81,6 @@ export default function BudgetIndex() {
   if (error) return <div>Error loading data!</div>;
 
   const handleEdit = (id) => {
-    // Construct the edit route dynamically
     navigate(`/user/budget/edit/${id}`);
   };
 
