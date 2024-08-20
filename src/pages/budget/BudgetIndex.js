@@ -7,9 +7,44 @@ import Layout from "../../components/Layout";
 import { useNavigate } from "react-router-dom";
 
 const columns = [
-  { id: "uuid", label: "uuid", minWidth: 170 },
-  { id: "name", label: "Name", minWidth: 170 },
-  { id: "createdAt", label: "Date", minWidth: 170, align: "right" },
+  { id: "name", label: "Name" },
+  { id: "description", label: "Description" },
+  { id: "amount", label: "Amount" },
+  {
+    id: "start_date",
+    label: "Start Date",
+    format: (value) =>
+      new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      }).format(new Date(value)),
+  },
+  {
+    id: "end_date",
+    label: "End Date",
+    format: (value) =>
+      new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      }).format(new Date(value)),
+  },
+  {
+    id: "createdAt",
+    label: "Created Date",
+    minWidth: 170,
+    align: "right",
+    format: (value) =>
+      new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      }).format(new Date(value)),
+  },
 ];
 
 export default function BudgetIndex() {
@@ -45,6 +80,11 @@ export default function BudgetIndex() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error loading data!</div>;
 
+  const handleEdit = (id) => {
+    // Construct the edit route dynamically
+    navigate(`/user/budget/edit/${id}`);
+  };
+
   return (
     <Layout title="Expenses">
       <Container maxWidth="lg">
@@ -70,6 +110,7 @@ export default function BudgetIndex() {
           rowsPerPage={rowsPerPage}
           handleChangePage={handleChangePage}
           handleChangeRowsPerPage={handleChangeRowsPerPage}
+          onEdit={handleEdit}
         />
       </Container>
     </Layout>

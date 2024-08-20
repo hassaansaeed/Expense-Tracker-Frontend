@@ -1,75 +1,71 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container, Button, InputBase } from "@mui/material";
-import { Search } from "@mui/icons-material";
-import { fetchData } from "../utils/apiUtils";
-import TableComponent from "../components/TableComponent";
+import { Box, Container, Grid, Typography } from "@mui/material";
+import { PieChart, BarChart, LineChart } from "@mui/x-charts";
 import Layout from "../components/Layout";
-import { useNavigate } from "react-router-dom";
-
-const columns = [
-  { id: "name", label: "Name", minWidth: 170 },
-  { id: "amount", label: "Amount", minWidth: 100, align: "right" },
-  { id: "createdAt", label: "Date", minWidth: 170, align: "right" },
-  { id: "category_id", label: "Category", minWidth: 170, align: "right" },
-];
 
 export default function Dashboard() {
-  const [expenses, setExpenses] = useState([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const [dataReady, setDataReady] = useState(false);
+  const [expenses, setExpenses] = useState([10, 20, 30]); // Dummy values
+  const [incomes, setIncomes] = useState([15, 25, 35]); // Dummy values
+  const [budgets, setBudgets] = useState([20, 30, 40]); // Dummy values
 
   useEffect(() => {
-    const fetchExpenses = async () => {
-      const { data, error } = await fetchData("/expense");
-      setLoading(false);
-      if (error) {
-        setError(error);
-      } else {
-        setExpenses(data);
-      }
-    };
-    fetchExpenses();
+    // Mimicking a delay as if fetching data
+    setTimeout(() => {
+      setDataReady(true);
+    }, 1000);
   }, []);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error loading data!</div>;
+  if (!dataReady) return <div>Loading...</div>;
 
   return (
-    <Layout title="Expenses">
+    <Layout title="Dashboard">
       <Container maxWidth="lg">
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "#111827",
-            "&:hover": {
-              backgroundColor: "#333", // Change this to your desired hover color
-            },
-          }}
-          onClick={() => navigate("/user/category/create")}
-        >
-          + Add Expense
-        </Button>
+        <Grid container spacing={2}>
+          {/* Expenses Chart */}
+          <Grid item xs={12} sm={6} md={4}>
+            <Typography variant="h6" align="center">
+              Expenses
+            </Typography>
+            <PieChart
+              series={[
+                {
+                  data: expenses.map((value, index) => ({ id: index, value })),
+                },
+              ]}
+              width={300}
+              height={300}
+            />
+          </Grid>
 
-        <TableComponent
-          columns={columns}
-          data={expenses}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          handleChangePage={handleChangePage}
-          handleChangeRowsPerPage={handleChangeRowsPerPage}
-        />
+          {/* Incomes Chart */}
+          <Grid item xs={12} sm={6} md={4}>
+            <Typography variant="h6" align="center">
+              Incomes
+            </Typography>
+            <BarChart
+              series={[
+                { data: incomes.map((value, index) => ({ id: index, value })) },
+              ]}
+              width={300}
+              height={300}
+            />
+          </Grid>
+
+          {/* Budgets Chart */}
+          <Grid item xs={12} sm={6} md={4}>
+            <Typography variant="h6" align="center">
+              Budgets
+            </Typography>
+            <LineChart
+              series={[
+                { data: budgets.map((value, index) => ({ id: index, value })) },
+              ]}
+              width={300}
+              height={300}
+            />
+          </Grid>
+        </Grid>
       </Container>
     </Layout>
   );
