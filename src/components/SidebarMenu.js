@@ -2,6 +2,7 @@ import React from "react";
 import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import {
   Dashboard as DashboardIcon,
+  Report as ReportIcon,
   AttachMoney as ExpenseIcon,
   Category as CategoryIcon,
   TrendingUp as IncomeIcon,
@@ -20,6 +21,7 @@ function SidebarMenu() {
     { text: "Categories", icon: <CategoryIcon />, path: "/user/categories" },
     { text: "Income", icon: <IncomeIcon />, path: "/user/income" },
     { text: "Budget", icon: <BudgetIcon />, path: "/user/budget" },
+    // { text: "Reporting", icon: <ReportIcon />, path: "/user/report" },
     { text: "Logout", icon: <LogOutIcon />, path: "/user/logout" },
   ];
 

@@ -5,6 +5,7 @@ import Layout from "../../components/Layout";
 import DynamicTextField from "../../components/DynamicTextField";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const theme = createTheme({
   palette: {
@@ -67,13 +68,23 @@ export default function CreateCategory() {
     try {
       const response = await postData("/category", data);
       if (response.error) {
-        setError(response.error);
+        const errorMessage =
+          response.error.message || "An unknown error occurred.";
+        setError(errorMessage);
+        toast.error(errorMessage); // Show error toast
       } else {
-        navigate("/user/categories");
-        console.log("Category created successfully");
+        toast.success("Category created successfully!"); // Show success toast
+        setTimeout(function () {
+          navigate("/user/categories");
+        }, 1000);
       }
     } catch (err) {
-      setError("An error occurred while submitting the form.");
+      const errorMessage =
+        err.response?.data?.error?.message ||
+        err.message ||
+        "An unknown error occurred.";
+      setError(errorMessage);
+      toast.error(errorMessage);
     }
   };
 

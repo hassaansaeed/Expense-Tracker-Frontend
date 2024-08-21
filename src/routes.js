@@ -73,6 +73,12 @@ const routes = [
     element: <CreateBudget />,
     routeType: "private",
   },
+
+  {
+    path: "/user/report",
+    element: <CreateBudget />,
+    routeType: "private",
+  },
 ];
 
 export default routes;

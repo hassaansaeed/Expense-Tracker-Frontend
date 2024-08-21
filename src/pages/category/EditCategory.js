@@ -5,6 +5,7 @@ import Layout from "../../components/Layout";
 import DynamicTextField from "../../components/DynamicTextField";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const theme = createTheme({
   palette: {
@@ -77,8 +78,10 @@ export default function EditCategory() {
       if (response.error) {
         setError(response.error);
       } else {
-        navigate("/user/categories");
-        console.log("Category updated successfully");
+        toast.success("Category updated successfully!"); // Show success toast
+        setTimeout(function () {
+          navigate("/user/categories");
+        }, 1000);
       }
     } catch (err) {
       setError("An error occurred while submitting the form.");
