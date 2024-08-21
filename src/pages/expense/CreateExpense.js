@@ -6,6 +6,7 @@ import DynamicTextField from "../../components/DynamicTextField";
 import DynamicSelectBox from "../../components/DynamicSelectBox";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const theme = createTheme({
   palette: {
@@ -108,7 +109,10 @@ export default function CreateExpense() {
       if (response.error) {
         setError(response.error);
       } else {
-        navigate("/user/expenses");
+        toast.success("Expense created successfully!"); // Show success toast
+        setTimeout(function () {
+          navigate("/user/expenses");
+        }, 1000);
       }
     } catch (err) {
       setError("An error occurred while submitting the form.");

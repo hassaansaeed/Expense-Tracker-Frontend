@@ -1,4 +1,3 @@
-// src/components/Layout.js
 import React from "react";
 import {
   Box,
@@ -14,6 +13,8 @@ import {
 import { Notifications } from "@mui/icons-material";
 import SidebarMenu from "./SidebarMenu";
 import UserAvatar from "./UserAvatarPopover";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const drawerWidth = 240;
 
@@ -36,9 +37,9 @@ const Layout = ({ children, title = "Dashboard" }) => {
             {title}
           </Typography>
           <IconButton color="inherit">
-            <Badge badgeContent={4} color="error">
+            {/* <Badge badgeContent={4} color="error">
               <Notifications />
-            </Badge>
+            </Badge> */}
           </IconButton>
           <UserAvatar />
         </Toolbar>
@@ -81,6 +82,7 @@ const Layout = ({ children, title = "Dashboard" }) => {
         <Toolbar />
         {children}
       </Box>
+      <ToastContainer />
     </Box>
   );
 };

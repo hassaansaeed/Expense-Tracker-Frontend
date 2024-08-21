@@ -7,6 +7,8 @@ import DynamicSelectBox from "../../components/DynamicSelectBox";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
+import { toast, ToastContainer } from "react-toastify"; // Import react-toastify
+import "react-toastify/dist/ReactToastify.css"; // Import the toastify CSS
 const theme = createTheme({
   palette: {
     primary: {
@@ -99,10 +101,15 @@ export default function CreateIncome() {
     try {
       const response = await postData("/income", data);
       if (response.error) {
-        setError(response.error);
+        const errorMessage =
+          response.error.message || "An unknown error occurred.";
+        setError(errorMessage);
+        toast.error(errorMessage);
       } else {
-        navigate("/user/income");
-        console.log("Income created successfully");
+        toast.success("Income created successfully!"); // Show success toast
+        setTimeout(function () {
+          navigate("/user/income");
+        }, 1000);
       }
     } catch (err) {
       setError("An error occurred while submitting the form.");

@@ -1,47 +1,85 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container, Grid, Typography } from "@mui/material";
-import { PieChart, BarChart, LineChart } from "@mui/x-charts";
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import Layout from "../components/Layout";
 import { fetchData } from "../utils/apiUtils";
+import ExpenseByCategoryChart from "../components/ExpenseByCategoryChart";
+import ExpenseDoughnutChart from "../components/ExpenseDoughnutChart"; // Import the new Doughnut Chart
+import IncomeSourceWiseLineChart from "../components/IncomeSourceWiseLineChart"; // Import the new Line Chart
 
 export default function Dashboard() {
-  const [expenses, setExpenses] = useState([]);
-  const [incomes, setIncomes] = useState([]);
-  const [budgets, setBudgets] = useState([]);
+  const [expenseData, setExpenseData] = useState([]);
+  const [expenseCategoryWiseData, SetExpenseCategoryWiseData] = useState([]);
+  const [incomeSourceWiseData, setIncomeSourceWiseData] = useState([]);
+  const [budgetData, setBudgetData] = useState([]);
+
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchExpensesBudgets = async () => {
       try {
-        const [expenseResponse, budgetResponse, incomeResponse] =
-          await Promise.all([
-            fetchData("/expense"),
-            fetchData("/budget"),
-            fetchData("/income"),
-          ]);
+        const [
+          expenseResponse,
+          budgetResponse,
+          incomeSourceWiseResponse,
+          expenseCategoryWiseResponse,
+        ] = await Promise.all([
+          fetchData("/expense"),
+          fetchData("/budget"),
+          fetchData("/report/income/source-wise"),
+          fetchData("/report/expenses/category-wise"),
+        ]);
 
         if (
           expenseResponse.error ||
           budgetResponse.error ||
-          incomeResponse.error
+          incomeSourceWiseResponse.error ||
+          expenseCategoryWiseResponse.error
         ) {
           setError(
             expenseResponse.error ||
               budgetResponse.error ||
-              incomeResponse.error
+              incomeSourceWiseResponse.error ||
+              expenseCategoryWiseResponse.error
           );
         } else {
-          setExpenses(expenseResponse.data);
-          setBudgets(budgetResponse.data);
-          setIncomes(incomeResponse.data);
+          setExpenseData(expenseResponse.data);
+          setBudgetData(budgetResponse.data);
+          setIncomeSourceWiseData(incomeSourceWiseResponse.data);
+          SetExpenseCategoryWiseData(expenseCategoryWiseResponse.data);
         }
       } catch (error) {
         setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchExpensesBudgets();
   }, []);
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem) {
+            return `${tooltipItem.label}: ${tooltipItem.raw.toFixed(2)}`;
+          },
+        },
+      },
+    },
+  };
 
   const chartColors = ["#3f51b5", "#f50057", "#4caf50"];
   const chartStyles = {
@@ -51,80 +89,57 @@ export default function Dashboard() {
     backgroundColor: "#fff",
   };
 
+  if (loading) {
+    return (
+      <Layout title="Dashboard">
+        <Container maxWidth="lg">
+          <CircularProgress />
+        </Container>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout title="Dashboard">
+        <Container maxWidth="lg">
+          <Typography color="error">{error}</Typography>
+        </Container>
+      </Layout>
+    );
+  }
+
   return (
     <Layout title="Dashboard">
       <Container maxWidth="lg">
         <Grid container spacing={3}>
-          {/* Expenses Chart */}
+          {/* Expenses Doughnut Chart */}
           <Grid item xs={12} sm={6} md={4}>
             <Box style={chartStyles}>
               <Typography variant="h6" align="center" gutterBottom>
                 Expenses
               </Typography>
-              <PieChart
-                series={[
-                  {
-                    data: expenses.map((item) => ({
-                      label: item.name, // Ensure that the label is the expense name
-                      value: parseFloat(item.amount),
-                    })),
-                    colors: chartColors,
-                  },
-                ]}
-                width={300}
-                height={300}
-                labels={({ datum }) => `${datum.label}: ${datum.value}`} // Ensure labels are shown
-                labelComponent={
-                  <text style={{ fill: "black", fontSize: 12 }} />
-                } // Style the labels
-                labelPosition="outside" // Position labels outside the pie slices
-              />
+              <ExpenseDoughnutChart data={expenseData} options={chartOptions} />
             </Box>
           </Grid>
 
-          {/* Incomes Chart */}
+          {/* Expenses Category Wise */}
           <Grid item xs={12} sm={6} md={4}>
             <Box style={chartStyles}>
               <Typography variant="h6" align="center" gutterBottom>
-                Incomes
+                Expenses Category Wise
               </Typography>
-              <BarChart
-                series={[
-                  {
-                    data: incomes.map((item) => ({
-                      label: item.name, // Using the income name as the label
-                      value: parseFloat(item.amount),
-                    })),
-                    colors: chartColors,
-                  },
-                ]}
-                width={300}
-                height={300}
-                labels={({ datum }) => `${datum.label}: ${datum.value} PKR`} // Display labels with values and currency
-              />
+              <ExpenseByCategoryChart data={expenseCategoryWiseData} />
             </Box>
           </Grid>
 
-          {/* Budgets Chart */}
+          {/* Income Source Wise */}
           <Grid item xs={12} sm={6} md={4}>
             <Box style={chartStyles}>
               <Typography variant="h6" align="center" gutterBottom>
-                Budgets
+                Income Source Wise
               </Typography>
-              <LineChart
-                series={[
-                  {
-                    data: budgets.map((item) => ({
-                      label: item.name, // Add the name as the label
-                      value: parseFloat(item.amount),
-                    })),
-                    colors: chartColors,
-                  },
-                ]}
-                width={300}
-                height={300}
-                labels={({ datum }) => `${datum.label}: ${datum.value}`} // Display labels with values
-              />
+              <IncomeSourceWiseLineChart data={incomeSourceWiseData} />
             </Box>
           </Grid>
         </Grid>

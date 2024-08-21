@@ -6,6 +6,7 @@ import DynamicTextField from "../../components/DynamicTextField";
 import DynamicSelectBox from "../../components/DynamicSelectBox";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const theme = createTheme({
   palette: {
@@ -115,8 +116,10 @@ export default function EditIncome() {
       if (response.error) {
         setError(response.error);
       } else {
-        navigate("/user/income");
-        console.log("Income updated successfully");
+        toast.success("Income updated successfully!");
+        setTimeout(function () {
+          navigate("/user/income");
+        }, 1000);
       }
     } catch (err) {
       setError("An error occurred while submitting the form.");

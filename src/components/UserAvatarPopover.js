@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Avatar, Popover, Typography, Button, Box } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Avatar, Popover, Typography, Button, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function UserAvatar() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -16,19 +16,18 @@ function UserAvatar() {
 
   const handleLogout = () => {
     handleClose();
-    // Perform logout logic here (e.g., clear tokens, redirect to login page)
-    navigate('/login');
+    navigate("/user/logout");
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'user-popover' : undefined;
+  const id = open ? "user-popover" : undefined;
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+    <Box sx={{ display: "flex", alignItems: "center" }}>
       <Avatar
         alt="User Avatar"
         src="/static/images/avatar/1.jpg"
-        sx={{ ml: 2, cursor: 'pointer' }}
+        sx={{ ml: 2, cursor: "pointer" }}
         onClick={handleAvatarClick}
       />
       <Popover
@@ -37,12 +36,12 @@ function UserAvatar() {
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
+          vertical: "bottom",
+          horizontal: "center",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
+          vertical: "top",
+          horizontal: "center",
         }}
       >
         <Box sx={{ p: 2 }}>

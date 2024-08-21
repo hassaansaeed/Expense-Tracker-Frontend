@@ -30,7 +30,20 @@ export async function postData(endpoint, data) {
     return { data: response.data, error: null };
   } catch (error) {
     console.error("Error posting data:", error);
-    return { data: null, error };
+
+    const errorMessage =
+      error.response?.data?.message || error.message || "An error occurred";
+    const errorStatus = error.response?.status || null;
+    const errorData = error.response?.data || null;
+
+    return {
+      data: null,
+      error: {
+        message: errorMessage,
+        status: errorStatus,
+        data: errorData,
+      },
+    };
   }
 }
 
@@ -42,7 +55,23 @@ export async function putData(endpoint, data) {
     });
     return { data: response.data, error: null };
   } catch (error) {
-    console.error("Error posting data:", error);
-    return { data: null, error };
+    console.error("Error putting data:", error);
+
+    // Handle specific error details, if available
+    const errorMessage =
+      error.response?.data?.message ||
+      error.message ||
+      "An unknown error occurred";
+    const errorStatus = error.response?.status || null;
+    const errorData = error.response?.data || null;
+
+    return {
+      data: null,
+      error: {
+        message: errorMessage,
+        status: errorStatus,
+        data: errorData,
+      },
+    };
   }
 }
