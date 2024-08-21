@@ -30,7 +30,7 @@ export default function Dashboard() {
           incomeSourceWiseResponse,
           expenseCategoryWiseResponse,
         ] = await Promise.all([
-          fetchData("/expense"),
+          fetchData("/report/expenses/total"),
           fetchData("/budget"),
           fetchData("/report/income/source-wise"),
           fetchData("/report/expenses/category-wise"),
