@@ -11,13 +11,29 @@ import { fetchData } from "../utils/apiUtils";
 import ExpenseByCategoryChart from "../components/ExpenseByCategoryChart";
 import ExpenseDoughnutChart from "../components/ExpenseDoughnutChart"; // Import the new Doughnut Chart
 import IncomeSourceWiseLineChart from "../components/IncomeSourceWiseLineChart"; // Import the new Line Chart
+import dayjs from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
+
+function getDefaultDateRange() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), 1);
+  const end = now;
+  const formatDate = (date) => date.toISOString().split("T")[0];
+  return { start: formatDate(start), end: formatDate(end) };
+}
 
 export default function Dashboard() {
+  const { start, end } = getDefaultDateRange();
+
   const [expenseData, setExpenseData] = useState([]);
   const [expenseCategoryWiseData, SetExpenseCategoryWiseData] = useState([]);
   const [incomeSourceWiseData, setIncomeSourceWiseData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [startDate, setStartDate] = useState(start);
+  const [endDate, setEndDate] = useState(end);
 
   useEffect(() => {
     const fetchExpensesBudgets = async () => {
@@ -27,9 +43,15 @@ export default function Dashboard() {
           incomeSourceWiseResponse,
           expenseCategoryWiseResponse,
         ] = await Promise.all([
-          fetchData("/report/expenses/total"),
-          fetchData("/report/income/source-wise"),
-          fetchData("/report/expenses/category-wise"),
+          fetchData(
+            `/report/expenses/total?startDate=${startDate}&endDate=${endDate}`
+          ),
+          fetchData(
+            `/report/income/source-wise?startDate=${startDate}&endDate=${endDate}`
+          ),
+          fetchData(
+            `/report/expenses/category-wise?startDate=${startDate}&endDate=${endDate}`
+          ),
         ]);
 
         if (
@@ -55,7 +77,13 @@ export default function Dashboard() {
     };
 
     fetchExpensesBudgets();
-  }, []);
+  }, [startDate, endDate]);
+
+  const handleDateChange = (e) => {
+    const [startDate, endDate] = e;
+    setStartDate(startDate);
+    setEndDate(endDate);
+  };
 
   const chartOptions = {
     responsive: true,
@@ -105,7 +133,20 @@ export default function Dashboard() {
   return (
     <Layout title="Dashboard">
       <Container maxWidth="lg">
-        <Grid container spacing={3}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DateRangePicker
+            defaultValue={[dayjs(startDate), dayjs(endDate)]}
+            onChange={(e) => handleDateChange(e)}
+          />
+        </LocalizationProvider>
+
+        <Grid
+          container
+          spacing={3}
+          sx={{
+            marginTop: "10px",
+          }}
+        >
           {/* Expenses Doughnut Chart */}
           <Grid item xs={12} sm={6} md={4}>
             <Box style={chartStyles}>
