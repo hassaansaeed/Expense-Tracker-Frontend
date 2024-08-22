@@ -46,6 +46,8 @@ function Login() {
 
       const token = response.data.accessToken;
       localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+
       navigate("/user/dashboard");
     } catch (error) {
       console.error("Login failed:", error);

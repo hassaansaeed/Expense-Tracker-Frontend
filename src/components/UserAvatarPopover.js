@@ -19,6 +19,8 @@ function UserAvatar() {
     navigate("/user/logout");
   };
 
+  var user = JSON.parse(localStorage.getItem("user"));
+  const { firstName, lastName, email } = user;
   const open = Boolean(anchorEl);
   const id = open ? "user-popover" : undefined;
 
@@ -30,6 +32,7 @@ function UserAvatar() {
         sx={{ ml: 2, cursor: "pointer" }}
         onClick={handleAvatarClick}
       />
+
       <Popover
         id={id}
         open={open}
@@ -45,7 +48,17 @@ function UserAvatar() {
         }}
       >
         <Box sx={{ p: 2 }}>
-          <Typography variant="subtitle1">User Name</Typography>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              textTransform: "capitalize",
+              fontWeight: "bold",
+            }}
+          >
+            {firstName} {lastName}
+          </Typography>
+
+          <Typography variant="subtitle1">{email}</Typography>
           <Button
             variant="outlined"
             color="primary"
