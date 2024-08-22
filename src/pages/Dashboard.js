@@ -15,10 +15,11 @@ import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
+import ProgressBar from "../components/ProgressBar";
 
 function getDefaultDateRange() {
   const now = new Date();
-  const start = new Date(now.getFullYear(), now.getMonth(), 1);
+  const start = new Date(now.getFullYear(), now.getMonth(), 2);
   const end = now;
   const formatDate = (date) => date.toISOString().split("T")[0];
   return { start: formatDate(start), end: formatDate(end) };
@@ -30,6 +31,7 @@ export default function Dashboard() {
   const [expenseData, setExpenseData] = useState([]);
   const [expenseCategoryWiseData, SetExpenseCategoryWiseData] = useState([]);
   const [incomeSourceWiseData, setIncomeSourceWiseData] = useState([]);
+  const [budgetExpenseWiseData, setBudgetExpenseWiseData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [startDate, setStartDate] = useState(start);
@@ -42,6 +44,7 @@ export default function Dashboard() {
           expenseResponse,
           incomeSourceWiseResponse,
           expenseCategoryWiseResponse,
+          budgetExpenseWiseResponse,
         ] = await Promise.all([
           fetchData(
             `/report/expenses/total?startDate=${startDate}&endDate=${endDate}`
@@ -52,22 +55,28 @@ export default function Dashboard() {
           fetchData(
             `/report/expenses/category-wise?startDate=${startDate}&endDate=${endDate}`
           ),
+          fetchData(
+            `/report/budget/expense-wise?startDate=${startDate}&endDate=${endDate}`
+          ),
         ]);
 
         if (
           expenseResponse.error ||
           incomeSourceWiseResponse.error ||
-          expenseCategoryWiseResponse.error
+          expenseCategoryWiseResponse.error ||
+          budgetExpenseWiseResponse.error
         ) {
           setError(
             expenseResponse.error ||
               incomeSourceWiseResponse.error ||
-              expenseCategoryWiseResponse.error
+              expenseCategoryWiseResponse.error ||
+              budgetExpenseWiseResponse.error
           );
         } else {
           setExpenseData(expenseResponse.data);
           setIncomeSourceWiseData(incomeSourceWiseResponse.data);
           SetExpenseCategoryWiseData(expenseCategoryWiseResponse.data);
+          setBudgetExpenseWiseData(budgetExpenseWiseResponse.data);
         }
       } catch (error) {
         setError(error.message);
@@ -148,7 +157,7 @@ export default function Dashboard() {
           }}
         >
           {/* Expenses Doughnut Chart */}
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={6}>
             <Box style={chartStyles}>
               <Typography variant="h6" align="center" gutterBottom>
                 Expenses
@@ -158,7 +167,7 @@ export default function Dashboard() {
           </Grid>
 
           {/* Expenses Category Wise */}
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={6}>
             <Box style={chartStyles}>
               <Typography variant="h6" align="center" gutterBottom>
                 Expenses Category Wise
@@ -168,12 +177,45 @@ export default function Dashboard() {
           </Grid>
 
           {/* Income Source Wise */}
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={6}>
             <Box style={chartStyles}>
               <Typography variant="h6" align="center" gutterBottom>
                 Income Source Wise
               </Typography>
               <IncomeSourceWiseLineChart data={incomeSourceWiseData} />
+            </Box>
+          </Grid>
+
+          {/* Budget Expense Wise */}
+          <Grid item xs={12} sm={6} md={6}>
+            <Box style={chartStyles}>
+              <Typography variant="h6" align="center" gutterBottom>
+                Budget Expense Wise
+              </Typography>
+              <div
+                style={{
+                  height: "400px",
+                  overflowY: "scroll",
+                }}
+              >
+                {budgetExpenseWiseData.map((budget) => {
+                  return (
+                    <div key={budget.uuid} style={{ marginBottom: "20px" }}>
+                      <h4>{budget.name}</h4>
+                      <p>
+                        Budget: <b>{budget.amount} </b>
+                        Spent: <b>{budget.spentAmount} </b>
+                        Remaining: <b>{budget.remainingAmount}</b>
+                      </p>
+                      <p></p>
+                      <ProgressBar
+                        total={parseFloat(budget.amount)}
+                        spent={budget.spentAmount}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
             </Box>
           </Grid>
         </Grid>
