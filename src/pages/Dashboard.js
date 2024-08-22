@@ -16,6 +16,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 import ProgressBar from "../components/ProgressBar";
+import LoaderComponent from "../components/LoaderComponent";
 
 function getDefaultDateRange() {
   const now = new Date();
@@ -81,7 +82,9 @@ export default function Dashboard() {
       } catch (error) {
         setError(error.message);
       } finally {
+        // setTimeout(function () {
         setLoading(false);
+        // }, 1000);
       }
     };
 
@@ -120,13 +123,7 @@ export default function Dashboard() {
   };
 
   if (loading) {
-    return (
-      <Layout title="Dashboard">
-        <Container maxWidth="lg">
-          <CircularProgress />
-        </Container>
-      </Layout>
-    );
+    return <LoaderComponent show={loading} />;
   }
 
   if (error) {

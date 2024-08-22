@@ -5,6 +5,7 @@ import { fetchData } from "../../utils/apiUtils";
 import TableComponent from "../../components/TableComponent";
 import Layout from "../../components/Layout";
 import { useNavigate } from "react-router-dom";
+import LoaderComponent from "../../components/LoaderComponent";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
@@ -62,7 +63,9 @@ export default function ExpenseIndex() {
     navigate(`/user/expense/edit/${id}`);
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return <LoaderComponent show={loading} />;
+  }
   if (error) return <div>Error loading data!</div>;
 
   return (

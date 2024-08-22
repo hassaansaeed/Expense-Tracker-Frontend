@@ -5,6 +5,7 @@ import { fetchData } from "../../utils/apiUtils";
 import TableComponent from "../../components/TableComponent";
 import Layout from "../../components/Layout";
 import { useNavigate } from "react-router-dom";
+import LoaderComponent from "../../components/LoaderComponent";
 
 const columns = [
   { id: "name", label: "Name" },
@@ -77,7 +78,9 @@ export default function BudgetIndex() {
     setPage(0);
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return <LoaderComponent show={loading} />;
+  }
   if (error) return <div>Error loading data!</div>;
 
   const handleEdit = (id) => {
