@@ -28,11 +28,11 @@ function UserAvatar() {
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Avatar
         alt="User Avatar"
-        src="/static/images/avatar/1.jpg"
-        sx={{ ml: 2, cursor: "pointer" }}
+        sx={{ ml: 2, cursor: "pointer", bgcolor: "#111827" }}
         onClick={handleAvatarClick}
-      />
-
+      >
+        {firstName.charAt(0).toUpperCase()}
+      </Avatar>
       <Popover
         id={id}
         open={open}
