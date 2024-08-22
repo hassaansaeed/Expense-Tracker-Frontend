@@ -16,8 +16,6 @@ export default function Dashboard() {
   const [expenseData, setExpenseData] = useState([]);
   const [expenseCategoryWiseData, SetExpenseCategoryWiseData] = useState([]);
   const [incomeSourceWiseData, setIncomeSourceWiseData] = useState([]);
-  const [budgetData, setBudgetData] = useState([]);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -26,31 +24,26 @@ export default function Dashboard() {
       try {
         const [
           expenseResponse,
-          budgetResponse,
           incomeSourceWiseResponse,
           expenseCategoryWiseResponse,
         ] = await Promise.all([
           fetchData("/report/expenses/total"),
-          fetchData("/budget"),
           fetchData("/report/income/source-wise"),
           fetchData("/report/expenses/category-wise"),
         ]);
 
         if (
           expenseResponse.error ||
-          budgetResponse.error ||
           incomeSourceWiseResponse.error ||
           expenseCategoryWiseResponse.error
         ) {
           setError(
             expenseResponse.error ||
-              budgetResponse.error ||
               incomeSourceWiseResponse.error ||
               expenseCategoryWiseResponse.error
           );
         } else {
           setExpenseData(expenseResponse.data);
-          setBudgetData(budgetResponse.data);
           setIncomeSourceWiseData(incomeSourceWiseResponse.data);
           SetExpenseCategoryWiseData(expenseCategoryWiseResponse.data);
         }
