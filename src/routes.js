@@ -15,11 +15,13 @@ import EditBudget from "./pages/budget/EditBudget";
 import EditIncome from "./pages/income/EditIncome";
 import EditCategory from "./pages/category/EditCategory";
 import EditExpense from "./pages/expense/EditExpense";
+import CompanySignup from "./pages/CompanySignup";
 
 const routes = [
   { path: "/", element: <Login />, routeType: "public" },
   { path: "/login", element: <Login />, routeType: "public" },
   { path: "/signup", element: <Signup />, routeType: "public" },
+  { path: "/company-signup", element: <CompanySignup />, routeType: "public" },
   { path: "/user/logout", element: <Logout />, routeType: "private" },
 
   { path: "/user/dashboard", element: <Dashboard />, routeType: "private" },

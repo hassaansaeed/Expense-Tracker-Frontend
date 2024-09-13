@@ -27,7 +27,7 @@ const theme = createTheme({
   },
 });
 
-function Signup() {
+function CompanySignup() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -87,7 +87,7 @@ function Signup() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5" align="center">
-              Sign Up
+              Company Registration
             </Typography>
             <Box
               component="form"
@@ -96,7 +96,7 @@ function Signup() {
               sx={{ mt: 1 }}
             >
               <TextField
-                label="First Name"
+                label="Company Name"
                 fullWidth
                 margin="normal"
                 name="firstName"
@@ -144,8 +144,8 @@ function Signup() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="/company-signup" variant="body2">
-                    {"Register as Company"}
+                  <Link href="/signup" variant="body2">
+                    {"Register as User"}
                   </Link>
                 </Grid>
                 <Grid item>
@@ -162,4 +162,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default CompanySignup;
