@@ -9,13 +9,15 @@ function App() {
   return (
     <Router>
       <Routes>
-        {routes.map(({ path, element, routeType }, index) => (
+        {routes.map(({ path, element, routeType, allowedRoles }, index) => (
           <Route
             key={index}
             path={path}
             element={
               routeType === "private" ? (
-                <PrivateRoute>{element}</PrivateRoute>
+                <PrivateRoute allowedRoles={allowedRoles}>
+                  {element}
+                </PrivateRoute>
               ) : (
                 <PublicRoute>{element}</PublicRoute>
               )

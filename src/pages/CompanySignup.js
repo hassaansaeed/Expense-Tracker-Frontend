@@ -28,11 +28,22 @@ const theme = createTheme({
 });
 
 function CompanySignup() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [data, setData] = useState({
+    comapnyName: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -40,12 +51,7 @@ function CompanySignup() {
     try {
       const response = await axios.post(
         "http://localhost:3000/auth/signup",
-        {
-          firstName,
-          lastName,
-          email,
-          password,
-        },
+        data,
         { withCredentials: true }
       );
 
@@ -53,7 +59,7 @@ function CompanySignup() {
       localStorage.setItem("token", token);
       navigate("/user/dashboard");
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Signup failed:", error);
     }
   };
 
@@ -74,7 +80,7 @@ function CompanySignup() {
           <CssBaseline />
           <Box
             sx={{
-              backgroundColor: "rgba(255, 255, 255, 0.8)", // White background with transparency
+              backgroundColor: "rgba(255, 255, 255, 0.8)",
               padding: 4,
               borderRadius: 2,
               boxShadow: 3,
@@ -96,20 +102,29 @@ function CompanySignup() {
               sx={{ mt: 1 }}
             >
               <TextField
-                label="Company Name"
+                label="Comapny Name"
+                fullWidth
+                margin="normal"
+                name="companyName"
+                value={data.companyName}
+                onChange={handleChange}
+              />
+
+              <TextField
+                label="Owner First Name"
                 fullWidth
                 margin="normal"
                 name="firstName"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                value={data.firstName}
+                onChange={handleChange}
               />
               <TextField
-                label="Last Name"
+                label="Owner Last Name"
                 fullWidth
                 margin="normal"
-                value={lastName}
                 name="lastName"
-                onChange={(e) => setLastName(e.target.value)}
+                value={data.lastName}
+                onChange={handleChange}
               />
               <TextField
                 margin="normal"
@@ -118,7 +133,8 @@ function CompanySignup() {
                 id="email"
                 label="Email Address"
                 name="email"
-                onChange={(e) => setEmail(e.target.value)}
+                value={data.email}
+                onChange={handleChange}
                 autoComplete="email"
                 autoFocus
               />
@@ -129,7 +145,8 @@ function CompanySignup() {
                 name="password"
                 label="Password"
                 type="password"
-                onChange={(e) => setPassword(e.target.value)}
+                value={data.password}
+                onChange={handleChange}
                 id="password"
                 autoComplete="current-password"
               />
