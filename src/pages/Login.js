@@ -30,10 +30,12 @@ const theme = createTheme({
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // State for error message
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
+    setErrorMessage(""); // Reset error message before new login attempt
     try {
       const response = await axios.post(
         "http://localhost:3000/auth/login",
@@ -50,7 +52,14 @@ function Login() {
 
       navigate("/user/dashboard");
     } catch (error) {
-      console.error("Login failed:", error);
+      if (
+        (error.response && error.response.status === 401) ||
+        error.response.status === 400
+      ) {
+        setErrorMessage("Invalid email or password. Please try again.");
+      } else {
+        setErrorMessage("An error occurred. Please try again later.");
+      }
     }
   };
 
@@ -114,6 +123,18 @@ function Login() {
                 id="password"
                 autoComplete="current-password"
               />
+
+              {errorMessage && (
+                <Typography
+                  color="error"
+                  variant="body2"
+                  align="center"
+                  sx={{ mt: 2 }}
+                >
+                  {errorMessage}
+                </Typography>
+              )}
+
               <Button
                 type="submit"
                 fullWidth

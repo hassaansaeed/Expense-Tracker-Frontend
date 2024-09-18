@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Container,
-  Grid,
-  Typography,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import Layout from "../components/Layout";
 import { fetchData } from "../utils/apiUtils";
 import ExpenseByCategoryChart from "../components/ExpenseByCategoryChart";
@@ -82,9 +76,7 @@ export default function Dashboard() {
       } catch (error) {
         setError(error.message);
       } finally {
-        // setTimeout(function () {
         setLoading(false);
-        // }, 1000);
       }
     };
 
@@ -96,6 +88,8 @@ export default function Dashboard() {
     setStartDate(startDate);
     setEndDate(endDate);
   };
+
+  const isEmpty = (data) => !data || data.length === 0;
 
   const chartOptions = {
     responsive: true,
@@ -159,7 +153,16 @@ export default function Dashboard() {
               <Typography variant="h6" align="center" gutterBottom>
                 Expenses
               </Typography>
-              <ExpenseDoughnutChart data={expenseData} options={chartOptions} />
+              {isEmpty(expenseData) ? (
+                <Typography align="center">
+                  No record found for the selected date range.
+                </Typography>
+              ) : (
+                <ExpenseDoughnutChart
+                  data={expenseData}
+                  options={chartOptions}
+                />
+              )}
             </Box>
           </Grid>
 
@@ -169,7 +172,13 @@ export default function Dashboard() {
               <Typography variant="h6" align="center" gutterBottom>
                 Expenses Category Wise
               </Typography>
-              <ExpenseByCategoryChart data={expenseCategoryWiseData} />
+              {isEmpty(expenseCategoryWiseData) ? (
+                <Typography align="center">
+                  No record found for the selected date range.
+                </Typography>
+              ) : (
+                <ExpenseByCategoryChart data={expenseCategoryWiseData} />
+              )}
             </Box>
           </Grid>
 
@@ -179,7 +188,13 @@ export default function Dashboard() {
               <Typography variant="h6" align="center" gutterBottom>
                 Income Source Wise
               </Typography>
-              <IncomeSourceWiseLineChart data={incomeSourceWiseData} />
+              {isEmpty(incomeSourceWiseData) ? (
+                <Typography align="center">
+                  No record found for the selected date range.
+                </Typography>
+              ) : (
+                <IncomeSourceWiseLineChart data={incomeSourceWiseData} />
+              )}
             </Box>
           </Grid>
 
@@ -195,8 +210,12 @@ export default function Dashboard() {
                   overflowY: "scroll",
                 }}
               >
-                {budgetExpenseWiseData.map((budget) => {
-                  return (
+                {isEmpty(budgetExpenseWiseData) ? (
+                  <Typography align="center">
+                    No record found for the selected date range.
+                  </Typography>
+                ) : (
+                  budgetExpenseWiseData.map((budget) => (
                     <div key={budget.uuid} style={{ marginBottom: "20px" }}>
                       <h4>{budget.name}</h4>
                       <p>
@@ -204,14 +223,13 @@ export default function Dashboard() {
                         Spent: <b>{budget.spentAmount} </b>
                         Remaining: <b>{budget.remainingAmount}</b>
                       </p>
-                      <p></p>
                       <ProgressBar
                         total={parseFloat(budget.amount)}
                         spent={budget.spentAmount}
                       />
                     </div>
-                  );
-                })}
+                  ))
+                )}
               </div>
             </Box>
           </Grid>

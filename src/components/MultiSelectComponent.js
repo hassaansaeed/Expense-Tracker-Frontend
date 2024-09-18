@@ -36,6 +36,15 @@ const MultiSelectComponent = ({
   const theme = useTheme();
   const [selectedItems, setSelectedItems] = React.useState([]);
 
+  // This effect ensures that default selected items are set when options are available
+  React.useEffect(() => {
+    const defaultSelectedUsers = options
+      .filter((user) => user.company_uuid) // Filter users with company_uuid
+      .map((user) => user.uuid); // Extract their UUIDs
+
+    setSelectedItems(defaultSelectedUsers);
+  }, [options]); // Runs when options change
+
   const handleChange = (event) => {
     const {
       target: { value },
@@ -44,6 +53,7 @@ const MultiSelectComponent = ({
     const selectedUsers = typeof value === "string" ? value.split(",") : value;
     setSelectedItems(selectedUsers);
 
+    // Pass the selected user objects to the parent component
     onSelectionChange(
       selectedUsers.map((uuid) => options.find((user) => user.uuid === uuid))
     );

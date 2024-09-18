@@ -28,7 +28,7 @@ export default function EditCompany() {
   const [data, setData] = useState({
     name: "",
     amount: "",
-    addresss: "",
+    address: "",
     users: [],
     company_id: uuid,
   });
@@ -105,8 +105,8 @@ export default function EditCompany() {
       if (response.error) {
         setError(response.error);
       } else {
-        console.log("still here");
-        // navigate("/user/companies");
+        // console.log("still here");
+        navigate("/user/companies");
       }
     } catch (err) {
       setError("An error occurred while submitting the form.");
@@ -132,7 +132,7 @@ export default function EditCompany() {
 
             <DynamicTextField
               id="address"
-              label="address"
+              label="Address"
               name="addresss"
               value={data.address}
               onChange={handleInputChange}
@@ -142,14 +142,14 @@ export default function EditCompany() {
               helperText={formErrors.address}
             />
 
-            <MultiSelectComponent
+            {/* <MultiSelectComponent
               label="Select Users"
               options={users}
               getOptionLabel={(option) =>
                 `${option.firstName} ${option.lastName}`
               }
               onSelectionChange={handleUserSelection} // selectedUsers
-            />
+            /> */}
 
             {error && (
               <Typography color="error" sx={{ mt: 2 }}>
