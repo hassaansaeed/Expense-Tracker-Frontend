@@ -26,12 +26,19 @@ export default function EditExpense() {
   const [budgets, setBudgets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userCompanies, setUserCompanies] = useState([]);
+
   const [data, setData] = useState({
     name: "",
     amount: "",
     category_id: "",
     budget_id: "",
+    company_uuid: "",
   });
+
+  const authUser = JSON.parse(localStorage.getItem("user"));
+  const userRole = authUser?.role;
+
   const [formErrors, setFormErrors] = useState({});
 
   useEffect(() => {
@@ -56,6 +63,15 @@ export default function EditExpense() {
           setBudgets(budgetResponse.data);
           setData(expenseResponse.data); // Prepopulate the form with existing data
         }
+
+        if (userRole === "company") {
+          const userResponse = await fetchData("/company");
+          if (!userResponse.error) {
+            setUserCompanies(userResponse.data);
+          } else {
+            setError(userResponse.error);
+          }
+        }
       } catch (error) {
         setError(error.message);
       } finally {
@@ -63,7 +79,9 @@ export default function EditExpense() {
       }
     };
     fetchExpenseData();
-  }, [uuid]);
+  }, [uuid, userRole]);
+
+  console.log("data", data);
 
   const categoryOptions = categories.map((category) => ({
     value: category.uuid,
@@ -73,6 +91,11 @@ export default function EditExpense() {
   const budgetOptions = budgets.map((budget) => ({
     value: budget.uuid,
     label: budget.name,
+  }));
+
+  const companyOptions = userCompanies.map((company) => ({
+    value: company.uuid,
+    label: company.name,
   }));
 
   const handleInputChange = (e) => {
@@ -171,6 +194,19 @@ export default function EditExpense() {
               error={!!formErrors.budget_id}
               helperText={formErrors.budget_id}
             />
+
+            {userRole === "company" && (
+              <DynamicSelectBox
+                id="company_uuid"
+                label="Company"
+                name="company_uuid"
+                value={data.company_uuid}
+                onChange={handleInputChange}
+                options={companyOptions}
+                error={!!formErrors.company_uuid}
+                helperText={formErrors.company_uuid}
+              />
+            )}
 
             {error && (
               <Typography color="error" sx={{ mt: 2 }}>

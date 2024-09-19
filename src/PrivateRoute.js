@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { fetchData } from "./utils/apiUtils";
 
-const PrivateRoute = ({ children }) => {
+const PrivateRoute = ({ children, allowedRoles = [] }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,7 +21,8 @@ const PrivateRoute = ({ children }) => {
         setIsAuthenticated(false);
         navigate("/login");
       } else {
-        setIsAuthenticated(data);
+        setIsAuthenticated(true);
+        setUser(JSON.parse(localStorage.getItem("user")));
       }
     };
 
@@ -29,10 +30,17 @@ const PrivateRoute = ({ children }) => {
   }, [navigate]);
 
   if (isAuthenticated === null) {
-    return <div>Loading...</div>; // Optionally render a loader or spinner here
+    return <div>Loading...</div>;
   }
 
-  return isAuthenticated ? children : <Navigate to="/" />;
+  if (
+    isAuthenticated &&
+    (allowedRoles.length === 0 || allowedRoles.includes(user?.role))
+  ) {
+    return children;
+  } else {
+    return <Navigate to="/unauthorized" />;
+  }
 };
 
 export default PrivateRoute;

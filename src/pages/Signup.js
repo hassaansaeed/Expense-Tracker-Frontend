@@ -80,14 +80,14 @@ function Signup() {
               boxShadow: 3,
               display: "flex",
               flexDirection: "column",
-              alignItems: "center", // Center align content horizontally
+              alignItems: "center",
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5" align="center">
-              Sign in
+              Sign Up
             </Typography>
             <Box
               component="form"
@@ -140,17 +140,17 @@ function Signup() {
                 color="primary"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Register
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
-                    {/* Forgot password? */}
+                  <Link href="/company-signup" variant="body2">
+                    {"Register as Company"}
                   </Link>
                 </Grid>
                 <Grid item>
                   <Link href="/" variant="body2">
-                    {"Alread have an account? Log in"}
+                    {"Have an account? Log in"}
                   </Link>
                 </Grid>
               </Grid>

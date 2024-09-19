@@ -27,39 +27,39 @@ const theme = createTheme({
   },
 });
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); // State for error message
+function CompanySignup() {
+  const [data, setData] = useState({
+    comapnyName: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    setErrorMessage(""); // Reset error message before new login attempt
+
     try {
       const response = await axios.post(
-        "http://localhost:3000/auth/login",
-        {
-          email,
-          password,
-        },
+        "http://localhost:3000/auth/signup",
+        data,
         { withCredentials: true }
       );
 
       const token = response.data.accessToken;
       localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-
       navigate("/user/dashboard");
     } catch (error) {
-      if (
-        (error.response && error.response.status === 401) ||
-        error.response.status === 400
-      ) {
-        setErrorMessage("Invalid email or password. Please try again.");
-      } else {
-        setErrorMessage("An error occurred. Please try again later.");
-      }
+      console.error("Signup failed:", error);
     }
   };
 
@@ -80,20 +80,20 @@ function Login() {
           <CssBaseline />
           <Box
             sx={{
-              backgroundColor: "rgba(255, 255, 255, 0.8)", // White background with transparency
+              backgroundColor: "rgba(255, 255, 255, 0.8)",
               padding: 4,
               borderRadius: 2,
               boxShadow: 3,
               display: "flex",
               flexDirection: "column",
-              alignItems: "center", // Center align content horizontally
+              alignItems: "center",
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5" align="center">
-              Sign in
+              Company Registration
             </Typography>
             <Box
               component="form"
@@ -102,13 +102,39 @@ function Login() {
               sx={{ mt: 1 }}
             >
               <TextField
+                label="Comapny Name"
+                fullWidth
+                margin="normal"
+                name="companyName"
+                value={data.companyName}
+                onChange={handleChange}
+              />
+
+              <TextField
+                label="Owner First Name"
+                fullWidth
+                margin="normal"
+                name="firstName"
+                value={data.firstName}
+                onChange={handleChange}
+              />
+              <TextField
+                label="Owner Last Name"
+                fullWidth
+                margin="normal"
+                name="lastName"
+                value={data.lastName}
+                onChange={handleChange}
+              />
+              <TextField
                 margin="normal"
                 required
                 fullWidth
                 id="email"
                 label="Email Address"
                 name="email"
-                onChange={(e) => setEmail(e.target.value)}
+                value={data.email}
+                onChange={handleChange}
                 autoComplete="email"
                 autoFocus
               />
@@ -119,22 +145,11 @@ function Login() {
                 name="password"
                 label="Password"
                 type="password"
-                onChange={(e) => setPassword(e.target.value)}
+                value={data.password}
+                onChange={handleChange}
                 id="password"
                 autoComplete="current-password"
               />
-
-              {errorMessage && (
-                <Typography
-                  color="error"
-                  variant="body2"
-                  align="center"
-                  sx={{ mt: 2 }}
-                >
-                  {errorMessage}
-                </Typography>
-              )}
-
               <Button
                 type="submit"
                 fullWidth
@@ -142,17 +157,17 @@ function Login() {
                 color="primary"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Register
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
-                    {/* Forgot password? */}
+                  <Link href="/signup" variant="body2">
+                    {"Register as User"}
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="/signup" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                  <Link href="/" variant="body2">
+                    {"Have an account? Log in"}
                   </Link>
                 </Grid>
               </Grid>
@@ -164,4 +179,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default CompanySignup;

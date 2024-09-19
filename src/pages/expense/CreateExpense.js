@@ -23,6 +23,7 @@ export default function CreateExpense() {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [budgets, setBudgets] = useState([]);
+  const [userCompanies, setUserCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [data, setData] = useState({
@@ -30,8 +31,12 @@ export default function CreateExpense() {
     amount: "",
     category_id: "",
     budget_id: "",
+    company_uuid: "",
   });
   const [formErrors, setFormErrors] = useState({});
+
+  const authUser = JSON.parse(localStorage.getItem("user"));
+  const userRole = authUser?.role;
 
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -42,13 +47,20 @@ export default function CreateExpense() {
           fetchData("/budget"),
         ]);
 
-        const categoryError = categoryResponse.error;
-        const budgetError = budgetResponse.error;
-        if (categoryError || budgetError) {
-          setError(categoryError || budgetError);
+        if (categoryResponse.error || budgetResponse.error) {
+          setError(categoryResponse.error || budgetResponse.error);
         } else {
           setCategories(categoryResponse.data);
           setBudgets(budgetResponse.data);
+
+          if (userRole === "company") {
+            const userResponse = await fetchData("/company");
+            if (!userResponse.error) {
+              setUserCompanies(userResponse.data);
+            } else {
+              setError(userResponse.error);
+            }
+          }
         }
       } catch (error) {
         setError(error.message);
@@ -57,7 +69,7 @@ export default function CreateExpense() {
       }
     };
     fetchExpenses();
-  }, []);
+  }, [userRole]); // Add userRole to the dependency array
 
   const categoryOptions = categories.map((category) => ({
     value: category.uuid,
@@ -67,6 +79,11 @@ export default function CreateExpense() {
   const budgetOptions = budgets.map((budget) => ({
     value: budget.uuid,
     label: budget.name,
+  }));
+
+  const companyOptions = userCompanies.map((company) => ({
+    value: company.uuid,
+    label: company.name,
   }));
 
   const handleInputChange = (e) => {
@@ -93,6 +110,7 @@ export default function CreateExpense() {
     if (!data.budget_id) {
       errors.budget_id = "Budget is required";
     }
+
     return errors;
   };
 
@@ -169,10 +187,17 @@ export default function CreateExpense() {
               helperText={formErrors.budget_id}
             />
 
-            {error && (
-              <Typography color="error" sx={{ mt: 2 }}>
-                {error}
-              </Typography>
+            {userRole === "company" && (
+              <DynamicSelectBox
+                id="company_uuid"
+                label="Company"
+                name="company_uuid"
+                value={data.company_uuid}
+                onChange={handleInputChange}
+                options={companyOptions}
+                error={!!formErrors.company_uuid}
+                helperText={formErrors.company_uuid}
+              />
             )}
 
             <Button
@@ -182,8 +207,10 @@ export default function CreateExpense() {
               color="primary"
               sx={{ mt: 3, mb: 2 }}
             >
-              Save
+              Create Expense
             </Button>
+
+            {error && <Typography color="error">{error}</Typography>}
           </Box>
         </Container>
       </Layout>
