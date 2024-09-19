@@ -30,10 +30,10 @@ export default function CreateExpense() {
     name: "",
     description: "",
     amount: "",
-    start_date: "",
-    end_date: "",
-    category_id: "",
-    company_uuid: "",
+    startDate: "",
+    endDate: "",
+    categoryUuid: "",
+    companyUuid: "",
   });
   const [formErrors, setFormErrors] = useState({});
 
@@ -98,8 +98,8 @@ export default function CreateExpense() {
     } else if (isNaN(data.amount) || parseFloat(data.amount) <= 0) {
       errors.amount = "Amount must be a positive number";
     }
-    if (!data.category_id) {
-      errors.category_id = "Category is required";
+    if (!data.categoryUuid) {
+      errors.categoryUuid = "Category is required";
     }
 
     return errors;
@@ -169,49 +169,49 @@ export default function CreateExpense() {
             />
 
             <DynamicTextField
-              id="start_date"
+              id="startDate"
               label="Start Date"
-              name="start_date"
-              value={data.start_date}
+              name="startDate"
+              value={data.startDate}
               onChange={handleInputChange}
-              autoComplete="start_date"
-              error={!!formErrors.start_date}
-              helperText={formErrors.start_date}
+              autoComplete="startDate"
+              error={!!formErrors.startDate}
+              helperText={formErrors.startDate}
               type="date"
             />
             <DynamicTextField
-              id="end_date"
+              id="endDate"
               label="End Date"
-              name="end_date"
-              value={data.end_date}
+              name="endDate"
+              value={data.endDate}
               onChange={handleInputChange}
-              autoComplete="end_date"
-              error={!!formErrors.end_date}
-              helperText={formErrors.end_date}
+              autoComplete="endDate"
+              error={!!formErrors.endDate}
+              helperText={formErrors.endDate}
               type="date"
             />
 
             <DynamicSelectBox
-              id="category_id"
+              id="categoryUuid"
               label="Category"
-              name="category_id"
-              value={data.category_id}
+              name="categoryUuid"
+              value={data.categoryUuid}
               onChange={handleInputChange}
               options={categoryOptions}
-              error={!!formErrors.category_id}
-              helperText={formErrors.category_id}
+              error={!!formErrors.categoryUuid}
+              helperText={formErrors.categoryUuid}
             />
 
             {userRole === "company" && (
               <DynamicSelectBox
-                id="company_uuid"
+                id="companyUuid"
                 label="Company"
-                name="company_uuid"
-                value={data.company_uuid}
+                name="companyUuid"
+                value={data.companyUuid}
                 onChange={handleInputChange}
                 options={userOptions}
-                error={!!formErrors.company_uuid}
-                helperText={formErrors.company_uuid}
+                error={!!formErrors.companyUuid}
+                helperText={formErrors.companyUuid}
               />
             )}
 

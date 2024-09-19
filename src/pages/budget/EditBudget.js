@@ -46,17 +46,17 @@ export default function EditBudget() {
           setError(budgetResponse.error);
         } else {
           const budgetData = budgetResponse.data;
-          const startDate = new Date(budgetData.start_date)
+          const startDate = new Date(budgetData.startDate)
             .toISOString()
             .split("T")[0];
-          const endDate = new Date(budgetData.end_date)
+          const endDate = new Date(budgetData.endDate)
             .toISOString()
             .split("T")[0];
 
           setBudget({
             ...budgetData,
-            start_date: startDate,
-            end_date: endDate,
+            startDate: startDate,
+            endDate: endDate,
           });
         }
       } catch (error) {
@@ -76,7 +76,7 @@ export default function EditBudget() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "start_date" || name === "end_date") {
+    if (name === "startDate" || name === "endDate") {
       const dateValue = new Date(value).toISOString().split("T")[0];
       setBudget((prev) => ({
         ...prev,
@@ -100,8 +100,8 @@ export default function EditBudget() {
     } else if (isNaN(budget.amount) || parseFloat(budget.amount) <= 0) {
       errors.amount = "Amount must be a positive number";
     }
-    if (!budget.category_id) {
-      errors.category_id = "Category is required";
+    if (!budget.categoryUuid) {
+      errors.categoryUuid = "Category is required";
     }
 
     return errors;
@@ -170,38 +170,38 @@ export default function EditBudget() {
             />
 
             <DynamicTextField
-              id="start_date"
+              id="startDate"
               label="Start Date"
-              name="start_date"
-              value={budget?.start_date || ""}
+              name="startDate"
+              value={budget?.startDate || ""}
               onChange={handleInputChange}
-              autoComplete="start_date"
-              error={!!formErrors.start_date}
-              helperText={formErrors.start_date}
+              autoComplete="startDate"
+              error={!!formErrors.startDate}
+              helperText={formErrors.startDate}
               type="date"
             />
 
             <DynamicTextField
-              id="end_date"
+              id="endDate"
               label="End Date"
-              name="end_date"
-              value={budget?.end_date || ""}
+              name="endDate"
+              value={budget?.endDate || ""}
               onChange={handleInputChange}
-              autoComplete="end_date"
-              error={!!formErrors.end_date}
-              helperText={formErrors.end_date}
+              autoComplete="endDate"
+              error={!!formErrors.endDate}
+              helperText={formErrors.endDate}
               type="date"
             />
 
             <DynamicSelectBox
-              id="category_id"
+              id="categoryUuid"
               label="Category"
-              name="category_id"
-              value={budget?.category_id || ""}
+              name="categoryUuid"
+              value={budget?.categoryUuid || ""}
               onChange={handleInputChange}
               options={categoryOptions}
-              error={!!formErrors.category_id}
-              helperText={formErrors.category_id}
+              error={!!formErrors.categoryUuid}
+              helperText={formErrors.categoryUuid}
             />
 
             {error && (

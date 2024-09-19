@@ -31,9 +31,9 @@ export default function EditExpense() {
   const [data, setData] = useState({
     name: "",
     amount: "",
-    category_id: "",
-    budget_id: "",
-    company_uuid: "",
+    categoryUuid: "",
+    budgetUuid: "",
+    companyUuid: "",
   });
 
   const authUser = JSON.parse(localStorage.getItem("user"));
@@ -116,11 +116,11 @@ export default function EditExpense() {
     } else if (isNaN(data.amount) || parseFloat(data.amount) <= 0) {
       errors.amount = "Amount must be a positive number";
     }
-    if (!data.category_id) {
-      errors.category_id = "Category is required";
+    if (!data.categoryUuid) {
+      errors.categoryUuid = "Category is required";
     }
-    if (!data.budget_id) {
-      errors.budget_id = "Budget is required";
+    if (!data.budgetUuid) {
+      errors.budgetUuid = "Budget is required";
     }
     return errors;
   };
@@ -174,37 +174,37 @@ export default function EditExpense() {
             />
 
             <DynamicSelectBox
-              id="category_id"
+              id="categoryUuid"
               label="Category"
-              name="category_id"
-              value={data.category_id}
+              name="categoryUuid"
+              value={data.categoryUuid}
               onChange={handleInputChange}
               options={categoryOptions}
-              error={!!formErrors.category_id}
-              helperText={formErrors.category_id}
+              error={!!formErrors.categoryUuid}
+              helperText={formErrors.categoryUuid}
             />
 
             <DynamicSelectBox
-              id="budget_id"
+              id="budgetUuid"
               label="Budget"
-              name="budget_id"
-              value={data.budget_id}
+              name="budgetUuid"
+              value={data.budgetUuid}
               onChange={handleInputChange}
               options={budgetOptions}
-              error={!!formErrors.budget_id}
-              helperText={formErrors.budget_id}
+              error={!!formErrors.budgetUuid}
+              helperText={formErrors.budgetUuid}
             />
 
             {userRole === "company" && (
               <DynamicSelectBox
-                id="company_uuid"
+                id="companyUuid"
                 label="Company"
-                name="company_uuid"
-                value={data.company_uuid}
+                name="companyUuid"
+                value={data.companyUuid}
                 onChange={handleInputChange}
                 options={companyOptions}
-                error={!!formErrors.company_uuid}
-                helperText={formErrors.company_uuid}
+                error={!!formErrors.companyUuid}
+                helperText={formErrors.companyUuid}
               />
             )}
 

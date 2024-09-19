@@ -39,7 +39,7 @@ const MultiSelectComponent = ({
   // This effect ensures that default selected items are set when options are available
   React.useEffect(() => {
     const defaultSelectedUsers = options
-      .filter((user) => user.company_uuid) // Filter users with company_uuid
+      .filter((user) => user.companyUuid) // Filter users with companyUuid
       .map((user) => user.uuid); // Extract their UUIDs
 
     setSelectedItems(defaultSelectedUsers);

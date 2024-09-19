@@ -47,10 +47,10 @@ export default function TableComponent({
                   {columns.map((column) => {
                     const value = row[column.id];
 
-                    if (column.id === "category_id") {
+                    if (column.id === "categoryUuid") {
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          <div>{row.category_id.name}</div>
+                          <div>{row.categoryUuid.name}</div>
                         </TableCell>
                       );
                     }

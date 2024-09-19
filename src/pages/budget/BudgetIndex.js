@@ -12,7 +12,7 @@ const columns = [
   { id: "description", label: "Description" },
   { id: "amount", label: "Amount" },
   {
-    id: "start_date",
+    id: "startDate",
     label: "Start Date",
     format: (value) =>
       new Intl.DateTimeFormat("en-US", {
@@ -22,7 +22,7 @@ const columns = [
       }).format(new Date(value)),
   },
   {
-    id: "end_date",
+    id: "endDate",
     label: "End Date",
     format: (value) =>
       new Intl.DateTimeFormat("en-US", {
