@@ -56,7 +56,6 @@ export async function putData(endpoint, data) {
   } catch (error) {
     console.error("Error putting data:", error);
 
-    // Handle specific error details, if available
     const errorMessage =
       error.response?.data?.message ||
       error.message ||

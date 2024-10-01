@@ -6,6 +6,7 @@ import DynamicTextField from "../../components/DynamicTextField";
 import DynamicSelectBox from "../../components/DynamicSelectBox";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const theme = createTheme({
   palette: {
@@ -117,18 +118,26 @@ export default function EditBudget() {
 
     try {
       const response = await putData(`/budget/${id}`, budget);
+      // console.log("response", response.error.message);
+      // return;
       if (response.error) {
-        setError(response.error);
+        toast.error(response.error.message || "An error occurred");
+        setError(response.error.message || "An error occurred");
       } else {
-        navigate("/user/budget");
+        toast.success("Budget created successfully!");
+        setTimeout(() => {
+          navigate("/user/budget");
+        }, 1000);
       }
     } catch (err) {
-      setError("An error occurred while submitting the form.");
+      toast.error("An unexpected error occurred. Please try again later.");
+      setError("An unexpected error occurred. Please try again later.");
+      console.error("Submission error:", err);
     }
   };
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error loading data!</div>;
+  // if (error) return <div>Error loading data!</div>;
 
   return (
     <ThemeProvider theme={theme}>

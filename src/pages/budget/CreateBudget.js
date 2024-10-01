@@ -19,13 +19,12 @@ const theme = createTheme({
   },
 });
 
-export default function CreateExpense() {
+export default function CreateBudget() {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
-  const [budgets, setBudgets] = useState([]);
+  const [userCompanies, setUserCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [userCompanies, setUserCompanies] = useState([]);
   const [data, setData] = useState({
     name: "",
     description: "",
@@ -46,9 +45,8 @@ export default function CreateExpense() {
       try {
         const [categoryResponse] = await Promise.all([fetchData("/category")]);
 
-        const categoryError = categoryResponse.error;
-        if (categoryError) {
-          setError(categoryError);
+        if (categoryResponse.error) {
+          setError(categoryResponse.error);
         } else {
           setCategories(categoryResponse.data);
         }
@@ -91,7 +89,7 @@ export default function CreateExpense() {
   const validateForm = () => {
     const errors = {};
     if (!data.name.trim()) {
-      errors.name = "Expense Name is required";
+      errors.name = "Budget Name is required";
     }
     if (!data.amount.trim()) {
       errors.amount = "Amount is required";
@@ -116,15 +114,18 @@ export default function CreateExpense() {
     try {
       const response = await postData("/budget", data);
       if (response.error) {
-        setError(response.error);
+        toast.error(response.error.message || "An error occurred");
+        setError(response.error.message || "An error occurred");
       } else {
-        toast.success("Budget created successfully!"); // Show success toast
-        setTimeout(function () {
+        toast.success("Budget created successfully!");
+        setTimeout(() => {
           navigate("/user/budget");
         }, 1000);
       }
     } catch (err) {
-      setError("An error occurred while submitting the form.");
+      toast.error("An unexpected error occurred. Please try again later.");
+      setError("An unexpected error occurred. Please try again later.");
+      console.error("Submission error:", err);
     }
   };
 
